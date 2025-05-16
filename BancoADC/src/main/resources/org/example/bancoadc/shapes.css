@@ -1,0 +1,8 @@
+.boton-circular {
+    -fx-shape: "M0,50 A50,50 0 1,0 100,50 A50,50 0 1,0 0,50 Z";
+    -fx-background-color: #ff0404;
+    -fx-min-width: 100px;
+    -fx-min-height: 100px;
+    -fx-max-width: 100px;
+    -fx-max-height: 100px;
+}
