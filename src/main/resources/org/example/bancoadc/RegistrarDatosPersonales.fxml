@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="360.0" stylesheets="@shapes.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.bancoadc.RegistrarDatosPersonalesController">
+   <children>
+      <Label layoutX="74.0" layoutY="47.0" text="REGISTRAR CUENTA">
+         <font>
+            <Font name="Bauhaus 93" size="25.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnVolver" layoutX="85.0" layoutY="512.0" minHeight="22.0" minWidth="42.0" mnemonicParsing="false" onAction="#pressBtnVolver" prefHeight="40.0" prefWidth="87.0" style="-fx-background-color: red;" text="volver" textFill="WHITE" />
+      <Button fx:id="btnContinuar" layoutX="184.0" layoutY="512.0" minHeight="22.0" minWidth="42.0" mnemonicParsing="false" onAction="#pressBtnContinuar" prefHeight="40.0" prefWidth="87.0" style="-fx-background-color: red;" text="continuar" textFill="WHITE" />
+      <TextField fx:id="txtNombreCompleto" layoutX="38.0" layoutY="179.0" onAction="#writeTxtNombreCompleto" prefHeight="26.0" prefWidth="282.0" />
+      <TextField fx:id="txtDoc" layoutX="182.0" layoutY="253.0" onAction="#writeTxtDoc" prefHeight="26.0" prefWidth="136.0" />
+      <Label layoutX="38.0" layoutY="157.0" text="nombre completo:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="183.0" layoutY="231.0" text="numero documento:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="94.0" fitWidth="96.0" layoutX="-9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/DIABLO1.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="112.0" fitWidth="60.0" layoutX="291.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/DIABLO2.png" />
+         </image>
+      </ImageView>
+      <ChoiceBox fx:id="chcDoc" layoutX="36.0" layoutY="253.0" onDragDetected="#selectChcDoc" prefHeight="26.0" prefWidth="44.0" />
+      <Label layoutX="37.0" layoutY="231.0" text="tipo documento:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="33.0" layoutY="300.0" text="fecha nacimiento:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="dtFechaNacimiento" layoutX="32.0" layoutY="320.0" onAction="#selectDtFechaNacimiento" prefHeight="26.0" prefWidth="130.0" />
+      <Label layoutX="184.0" layoutY="300.0" text="pais nacimiento:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtPais" layoutX="182.0" layoutY="320.0" onAction="#writeTxtPais" prefHeight="26.0" prefWidth="136.0" />
+      <Label layoutX="33.0" layoutY="387.0" text="genero:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="chcGenero" layoutX="33.0" layoutY="409.0" onDragDetected="#selectChcGenero" prefHeight="26.0" prefWidth="110.0" />
+      <Label fx:id="lblError" layoutX="104.0" layoutY="469.0" text="Error: falta completar casillas" textFill="RED" />
+   </children>
+</AnchorPane>
