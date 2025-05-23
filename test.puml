@@ -1,0 +1,213 @@
+@startuml
+class fundamentos.adcbank.services.AuthenticationService {
+- {static} AuthenticationService instance
+- Document currentUser
+- String currentToken
++ {static} AuthenticationService getInstance()
++ boolean login(String,String)
++ boolean register(String,String)
++ void logout()
++ Document getCurrentUser()
++ String getCurrentToken()
+- String generateToken()
++ boolean validateToken(String)
++ void notifyBalanceUpdate()
+}
+
+
+class fundamentos.adcbank.services.TokenValidator {
+- AuthenticationService authService
++ boolean validate(String,double,String,String)
+}
+
+
+class fundamentos.adcbank.controllers.RegisterController {
+- TextField usernameField
+- PasswordField passwordField
+- AuthenticationService authService
+- void handleRegister()
+- void handleBackToLogin()
+}
+
+
+class fundamentos.adcbank.models.User {
+- String id
+- String username
+- String password
++ String getId()
++ void setId(String)
++ String getUsername()
++ void setUsername(String)
++ String getPassword()
++ void setPassword(String)
+}
+
+
+class fundamentos.adcbank.controllers.DepositController {
+- TextField amountField
+- TextField tokenField
+- AuthenticationService authService
+- void handleDeposit()
+- void showErrorAlert(String)
+- String getCurrentAccountId()
+}
+
+
+class fundamentos.adcbank.utils.TokenGenerator {
++ {static} String generateToken()
+}
+
+class fundamentos.adcbank.services.AccountExistsValidator {
++ boolean validate(String,double,String,String)
+}
+
+class fundamentos.adcbank.controllers.MainController {
+- Label balanceLabel
+- Label tokenLabel
+- Button depositButton
+- Button withdrawButton
+- Button transferButton
+- Button logoutButton
+- AuthenticationService authService
++ void initialize()
+- String getAccountIdForUser(String)
+- double getBalanceForAccount(String)
+- void handleDeposit()
+- void handleWithdraw()
+- void handleTransfer()
+- void handleLogout()
++ void update(Observable,Object)
+- void refreshBalance()
+}
+
+
+class fundamentos.adcbank.controllers.TransferController {
+- TextField amountField
+- TextField tokenField
+- TextField targetAccountField
+- AuthenticationService authService
+- void handleTransfer()
+- String getCurrentAccountId()
+}
+
+
+interface fundamentos.adcbank.services.TransactionCommand {
+~ void execute(String,double,String)
+}
+
+abstract class fundamentos.adcbank.services.TransactionValidator {
+# TransactionValidator next
++ void setNext(TransactionValidator)
++ {abstract}boolean validate(String,double,String,String)
+}
+
+
+class fundamentos.adcbank.Main {
++ void start(Stage)
++ {static} void main(String[])
+}
+
+class fundamentos.adcbank.services.DatabaseService {
+- {static} DatabaseService instance
+- MongoClient mongoClient
+- MongoDatabase database
++ {static} DatabaseService getInstance()
++ MongoDatabase getDatabase()
+}
+
+
+class fundamentos.adcbank.utils.SecurityUtils {
++ {static} boolean verifyPassword(String,String)
+}
+
+class fundamentos.adcbank.models.Account {
+- String id
+- String userId
+- String type
+- double balance
++ String getId()
++ void setId(String)
++ String getUserId()
++ void setUserId(String)
++ String getType()
++ void setType(String)
++ double getBalance()
++ void setBalance(double)
+}
+
+
+class fundamentos.adcbank.services.AccountFactory {
++ Account createAccount(String,String)
+- String generateAccountId()
+}
+
+class fundamentos.adcbank.services.TransferCommand {
++ void execute(String,double,String)
+- double convertBalance(Object)
+}
+
+class fundamentos.adcbank.services.DepositCommand {
++ void execute(String,double,String)
+}
+
+class fundamentos.adcbank.models.Transaction {
+- String id
+- String accountId
+- String type
+- double amount
+- Date timestamp
+- String targetAccountId
++ String getId()
++ void setId(String)
++ String getAccountId()
++ void setAccountId(String)
++ String getType()
++ void setType(String)
++ double getAmount()
++ void setAmount(double)
++ Date getTimestamp()
++ void setTimestamp(Date)
++ String getTargetAccountId()
++ void setTargetAccountId(String)
+}
+
+
+class fundamentos.adcbank.controllers.WithdrawController {
+- TextField amountField
+- TextField tokenField
+- AuthenticationService authService
+- void handleWithdraw()
+- String getCurrentAccountId()
+}
+
+
+class fundamentos.adcbank.controllers.LoginController {
+- TextField usernameField
+- TextField passwordField
+- AuthenticationService authService
+- void handleLogin()
+- void handleRegister()
+}
+
+
+class fundamentos.adcbank.services.WithdrawCommand {
++ void execute(String,double,String)
+- double convertBalance(Object)
+}
+
+class fundamentos.adcbank.services.BalanceValidator {
++ boolean validate(String,double,String,String)
+}
+
+
+
+java.util.Observable <|-- fundamentos.adcbank.services.AuthenticationService
+fundamentos.adcbank.services.TransactionValidator <|-- fundamentos.adcbank.services.TokenValidator
+fundamentos.adcbank.services.TransactionValidator <|-- fundamentos.adcbank.services.AccountExistsValidator
+java.util.Observer <|.. fundamentos.adcbank.controllers.MainController
+javafx.application.Application <|-- fundamentos.adcbank.Main
+fundamentos.adcbank.services.TransactionCommand <|.. fundamentos.adcbank.services.TransferCommand
+fundamentos.adcbank.services.TransactionCommand <|.. fundamentos.adcbank.services.DepositCommand
+fundamentos.adcbank.services.TransactionCommand <|.. fundamentos.adcbank.services.WithdrawCommand
+fundamentos.adcbank.services.TransactionValidator <|-- fundamentos.adcbank.services.BalanceValidator
+@enduml

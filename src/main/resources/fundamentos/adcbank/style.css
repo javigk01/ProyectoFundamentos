@@ -1,16 +1,18 @@
-
 .root {
-    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-family: "Arial", sans-serif;
     -fx-background-color: #121212;
     -fx-text-fill: white;
+    -fx-text-transform: none;
 }
 
 .label {
     -fx-text-fill: #ffffff;
     -fx-font-size: 14px;
+    -fx-text-transform: none;
 }
 
 .text-field {
+    -fx-font-family: "Roboto", sans-serif;
     -fx-background-color: #1f1f1f;
     -fx-text-fill: #ffffff;
     -fx-background-radius: 5;
@@ -18,6 +20,7 @@
     -fx-border-color: #333333;
     -fx-border-width: 1;
     -fx-padding: 5;
+    -fx-text-transform: none;
 }
 
 .button {
@@ -25,6 +28,7 @@
     -fx-padding: 10 20;
     -fx-text-fill: white;
     -fx-font-weight: bold;
+    -fx-text-transform: none;
 }
 
 .button-red {

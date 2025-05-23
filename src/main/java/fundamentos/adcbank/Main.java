@@ -17,7 +17,7 @@ public class Main extends Application {
 
     /**
      * Starts the JavaFX application and loads the login view.
-     * @param primaryStage The primary stage for this application.
+     * @param primaryStage The primary stage for this application.z
      * @throws Exception if the FXML file cannot be loaded.
      */
     @Override

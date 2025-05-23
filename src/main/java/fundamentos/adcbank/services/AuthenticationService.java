@@ -54,22 +54,44 @@ public class AuthenticationService extends Observable {
     }
 
     /**
-     * @brief Registers a new user with the provided credentials.
+     * @brief Registers a new user with the provided credentials and creates a default account.
      * @param username The username of the new user.
      * @param password The password of the new user.
-     * @return True if registration is successful, false if the username already exists.
+     * @return True if registration and account creation are successful, false if the username already exists.
      */
     public boolean register(String username, String password) {
         MongoCollection<Document> users = DatabaseService.getInstance().getDatabase().getCollection("users");
+        MongoCollection<Document> accounts = DatabaseService.getInstance().getDatabase().getCollection("accounts");
+
+        // Check if username already exists
         Document query = new Document("username", username);
         if (users.find(query).first() != null) {
             return false;
         }
+
+        // Create new user
+        String userId = "USER" + (users.countDocuments() + 1);
         Document newUser = new Document("username", username)
                 .append("password", password)
-                .append("_id", "user" + (users.countDocuments() + 1));
-        users.insertOne(newUser);
-        return true;
+                .append("_id", userId);
+
+        // Create default account for the user
+        String accountId = "ACCOUNT" + (accounts.countDocuments() + 1);
+        Document newAccount = new Document("_id", accountId)
+                .append("userId", userId)
+                .append("type", "SAVINGS")
+                .append("balance", 0);
+
+        try {
+            // Insert user and account as a single transaction
+            users.insertOne(newUser);
+            accounts.insertOne(newAccount);
+            return true;
+        } catch (Exception e) {
+            // Log error and rollback if necessary (MongoDB transactions can be used for atomicity)
+            System.err.println("Error during registration: " + e.getMessage());
+            return false;
+        }
     }
 
     /**
