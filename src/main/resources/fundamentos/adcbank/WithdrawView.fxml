@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="fundamentos.adcbank.controllers.WithdrawController" spacing="10" alignment="CENTER">
+    <TextField fx:id="amountField" promptText="Amount"/>
+    <TextField fx:id="tokenField" promptText="Token"/>
+    <Button text="Withdraw" onAction="#handleWithdraw"/>
+</VBox>
