@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="fundamentos.adcbank.controllers.RegisterController" spacing="10" alignment="CENTER">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="fundamentos.adcbank.controllers.RegisterController"
+      spacing="20" alignment="CENTER" styleClass="root"
+      stylesheets="@style.css">
+    <Label text="ADC Bank - Register" style="-fx-font-weight: bold; -fx-font-size: 16;"/>
+    <Separator/>
     <TextField fx:id="usernameField" promptText="Username"/>
     <PasswordField fx:id="passwordField" promptText="Password"/>
-    <Button text="Register" onAction="#handleRegister"/>
+    <Button text="Register" onAction="#handleRegister" defaultButton="true"/>
     <Button text="Back to Login" onAction="#handleBackToLogin"/>
 </VBox>

@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="fundamentos.adcbank.controllers.LoginController" spacing="10" alignment="CENTER">
-    <TextField fx:id="usernameField" promptText="Username"/>
-    <PasswordField fx:id="passwordField" promptText="Password"/>
-    <Button text="Login" onAction="#handleLogin"/>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="fundamentos.adcbank.controllers.DepositController"
+      spacing="20" alignment="CENTER" styleClass="root"
+      stylesheets="@style.css">
+    <Label text="ADC Bank - Deposit Funds" style="-fx-font-weight: bold; -fx-font-size: 16;"/>
+    <Separator/>
+    <TextField fx:id="amountField" promptText="Amount to Deposit"/>
+    <TextField fx:id="tokenField" promptText="Security Token" style="-fx-font-family: monospace;"/>
+    <Button text="Deposit" onAction="#handleDeposit" defaultButton="true"/>
+    <Separator/>
+    <Label text="Your money is safe with us" style="-fx-font-style: italic;"/>
 </VBox>

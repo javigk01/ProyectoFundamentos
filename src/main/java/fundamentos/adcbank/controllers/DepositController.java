@@ -1,9 +1,12 @@
 package fundamentos.adcbank.controllers;
 
+import com.mongodb.client.MongoCollection;
 import fundamentos.adcbank.services.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
+import org.bson.Document;
 
 public class DepositController {
     @FXML
@@ -25,8 +28,12 @@ public class DepositController {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText(null);
-                alert.setContentText("Deposit successful.");
+                alert.setContentText("Transaction successful.");
                 alert.showAndWait();
+                Stage stage = (Stage) amountField.getScene().getWindow();
+                stage.close();
+                authService.notifyBalanceUpdate();
+                AuthenticationService.getInstance().notifyBalanceUpdate();
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Validation Failed");
@@ -34,6 +41,7 @@ public class DepositController {
                 alert.setContentText("Invalid token.");
                 alert.showAndWait();
             }
+
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Input Error");
@@ -46,6 +54,10 @@ public class DepositController {
     }
 
     private String getCurrentAccountId() {
-        return "account1"; // Placeholder
+        String userId = authService.getCurrentUser().getString("_id");
+        MongoCollection<Document> accounts = DatabaseService.getInstance().getDatabase().getCollection("accounts");
+        Document query = new Document("userId", userId);
+        Document account = accounts.find(query).first();
+        return account != null ? account.getString("_id") : null;
     }
 }

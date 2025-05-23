@@ -7,19 +7,26 @@ public class BalanceValidator extends TransactionValidator {
     @Override
     public boolean validate(String accountId, double amount, String targetAccountId, String token) {
         MongoCollection<Document> accounts = DatabaseService.getInstance().getDatabase().getCollection("accounts");
-        Document query = new Document("_id", accountId);
-        Document accountDoc = accounts.find(query).first();
-        if (accountDoc != null) {
-            double balance = accountDoc.getDouble("balance");
-            if (balance < amount) {
-                return false;
-            }
-        } else {
+        Document account = accounts.find(new Document("_id", accountId)).first();
+        if (account == null) {
             return false;
         }
-        if (next != null) {
-            return next.validate(accountId, amount, targetAccountId, token);
+
+        // Handle Integer/Double balance
+        Object balanceValue = account.get("balance");
+        double balance;
+        if (balanceValue instanceof Integer) {
+            balance = ((Integer) balanceValue).doubleValue();
+        } else if (balanceValue instanceof Double) {
+            balance = (Double) balanceValue;
+        } else {
+            return false; // Invalid type
         }
-        return true;
+
+        if (balance < amount) {
+            return false;
+        }
+
+        return next == null || next.validate(accountId, amount, targetAccountId, token);
     }
 }

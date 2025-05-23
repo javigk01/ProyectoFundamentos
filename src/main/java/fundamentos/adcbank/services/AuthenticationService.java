@@ -72,4 +72,9 @@ public class AuthenticationService extends Observable {
         }
         return token.equals(currentToken) && currentUser != null;
     }
+    public void notifyBalanceUpdate() {
+        setChanged();
+        notifyObservers("balance_update");
+    }
+
 }

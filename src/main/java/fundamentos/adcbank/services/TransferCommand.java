@@ -2,40 +2,37 @@ package fundamentos.adcbank.services;
 
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
-import java.util.Date;
 
 public class TransferCommand implements TransactionCommand {
     @Override
-    public void execute(String accountId, double amount, String targetAccountId) {
-        if (targetAccountId == null) {
-            throw new RuntimeException("Target account ID is required for transfer");
-        }
+    public void execute(String sourceAccountId, double amount, String targetAccountId) {
         MongoCollection<Document> accounts = DatabaseService.getInstance().getDatabase().getCollection("accounts");
+
+        // Withdraw from source
+        Document sourceQuery = new Document("_id", sourceAccountId);
+        Document sourceAccount = accounts.find(sourceQuery).first();
+        if (sourceAccount != null) {
+            Object sourceBalanceValue = sourceAccount.get("balance");
+            double sourceBalance = convertBalance(sourceBalanceValue);
+            accounts.updateOne(sourceQuery, new Document("$set", new Document("balance", sourceBalance - amount)));
+        }
+
+        // Deposit to target
         Document targetQuery = new Document("_id", targetAccountId);
-        Document targetAccountDoc = accounts.find(targetQuery).first();
-        if (targetAccountDoc == null) {
-            throw new RuntimeException("Target account does not exist");
+        Document targetAccount = accounts.find(targetQuery).first();
+        if (targetAccount != null) {
+            Object targetBalanceValue = targetAccount.get("balance");
+            double targetBalance = convertBalance(targetBalanceValue);
+            accounts.updateOne(targetQuery, new Document("$set", new Document("balance", targetBalance + amount)));
         }
-        Document sourceQuery = new Document("_id", accountId);
-        Document sourceAccountDoc = accounts.find(sourceQuery).first();
-        if (sourceAccountDoc != null) {
-            double currentBalance = sourceAccountDoc.getDouble("balance");
-            if (currentBalance >= amount) {
-                double newSourceBalance = currentBalance - amount;
-                accounts.updateOne(sourceQuery, new Document("$set", new Document("balance", newSourceBalance)));
-                double targetBalance = targetAccountDoc.getDouble("balance");
-                double newTargetBalance = targetBalance + amount;
-                accounts.updateOne(targetQuery, new Document("$set", new Document("balance", newTargetBalance)));
-                MongoCollection<Document> transactions = DatabaseService.getInstance().getDatabase().getCollection("transactions");
-                Document transactionDoc = new Document("accountId", accountId)
-                        .append("type", "transfer")
-                        .append("amount", amount)
-                        .append("targetAccountId", targetAccountId)
-                        .append("timestamp", new Date());
-                transactions.insertOne(transactionDoc);
-            } else {
-                throw new RuntimeException("Insufficient balance");
-            }
+    }
+
+    private double convertBalance(Object balanceValue) {
+        if (balanceValue instanceof Integer) {
+            return ((Integer) balanceValue).doubleValue();
+        } else if (balanceValue instanceof Double) {
+            return (Double) balanceValue;
         }
+        throw new IllegalArgumentException("Invalid balance type");
     }
 }

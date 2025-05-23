@@ -4,6 +4,7 @@ import fundamentos.adcbank.services.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 
 public class TransferController {
     @FXML
@@ -32,8 +33,12 @@ public class TransferController {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText(null);
-                alert.setContentText("Transfer successful.");
+                alert.setContentText("Transaction successful.");
                 alert.showAndWait();
+                Stage stage = (Stage) amountField.getScene().getWindow();
+                stage.close();
+                authService.notifyBalanceUpdate();
+                AuthenticationService.getInstance().notifyBalanceUpdate();
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Validation Failed");

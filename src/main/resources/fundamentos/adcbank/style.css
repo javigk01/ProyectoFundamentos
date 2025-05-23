@@ -1,0 +1,34 @@
+/* style.css */
+.root {
+    -fx-background-color: #ffffff;
+}
+
+.label {
+    -fx-text-fill: #403953;
+}
+
+.text-field, .password-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #403953;
+    -fx-border-radius: 4;
+    -fx-padding: 8;
+}
+
+.button {
+    -fx-background-color: #490062;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 4;
+    -fx-padding: 8 16;
+}
+
+.button:hover {
+    -fx-background-color: #5a007d;
+}
+
+.hyperlink {
+    -fx-text-fill: #490062;
+}
+
+.separator {
+    -fx-background-color: #403953;
+}

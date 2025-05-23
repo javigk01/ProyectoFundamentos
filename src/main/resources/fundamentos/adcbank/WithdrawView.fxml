@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="fundamentos.adcbank.controllers.WithdrawController" spacing="10" alignment="CENTER">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="fundamentos.adcbank.controllers.WithdrawController"
+      spacing="20" alignment="CENTER" styleClass="root"
+      stylesheets="@style.css">
+    <Label text="ADC Bank - Withdraw Funds" style="-fx-font-weight: bold; -fx-font-size: 16;"/>
+    <Separator/>
     <TextField fx:id="amountField" promptText="Amount"/>
     <TextField fx:id="tokenField" promptText="Token"/>
-    <Button text="Withdraw" onAction="#handleWithdraw"/>
+    <Button text="Withdraw" onAction="#handleWithdraw" defaultButton="true"/>
 </VBox>

@@ -32,10 +32,10 @@ public class MainController implements Observer {
     @FXML
     public void initialize() {
         authService.addObserver(this);
-        tokenLabel.setText(authService.getCurrentToken());
-        String accountId = getAccountIdForUser(authService.getCurrentUser().getString("_id"));
-        double balance = getBalanceForAccount(accountId);
-        balanceLabel.setText(String.format("%.2f", balance));
+        if (authService.getCurrentUser() != null) {
+            tokenLabel.setText(authService.getCurrentToken());
+            refreshBalance();
+        }
     }
 
     private String getAccountIdForUser(String userId) {
@@ -62,13 +62,6 @@ public class MainController implements Observer {
             }
         }
         return 0.0; // Default value if not found or invalid type
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        if (o == authService) {
-            tokenLabel.setText((String) arg);
-        }
     }
 
     @FXML
@@ -109,7 +102,14 @@ public class MainController implements Observer {
 
     @FXML
     private void handleLogout() {
+        // First refresh UI elements that depend on current user
+        balanceLabel.setText("0.00");
+        tokenLabel.setText("");
+
+        // Then perform logout
         authService.logout();
+
+        // Finally switch to login view
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fundamentos/adcbank/LoginView.fxml"));
             Stage stage = (Stage) logoutButton.getScene().getWindow();
@@ -118,5 +118,27 @@ public class MainController implements Observer {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o == authService) {
+            if (arg instanceof String) {
+                String message = (String) arg;
+                if (message.equals("balance_update")) {
+                    refreshBalance();
+                } else {
+                    // Handle token updates
+                    tokenLabel.setText(message);
+                }
+            }
+        }
+    }
+
+
+    private void refreshBalance() {
+        String accountId = getAccountIdForUser(authService.getCurrentUser().getString("_id"));
+        double balance = getBalanceForAccount(accountId);
+        balanceLabel.setText(String.format("%.2f", balance));
     }
 }

@@ -7,7 +7,7 @@ public class AccountFactory {
         Account account = new Account();
         account.setType(type);
         account.setUserId(userId);
-        account.setBalance(0.0);
+        account.setBalance(0.0); // Explicit double
         return account;
     }
 }
