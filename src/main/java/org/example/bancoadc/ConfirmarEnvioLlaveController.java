@@ -54,12 +54,13 @@ public class ConfirmarEnvioLlaveController {
     @FXML
     private void pressBtnVolver() {
         try {
-            // Cargar el archivo FXML de la vista de llaves
             FXMLLoader loader = new FXMLLoader(getClass().getResource("MenuPrincipal.fxml"));
             AnchorPane principalView = loader.load();
-
-            // Reemplazar la vista actual con la nueva vista
-            AnchorPane root = (AnchorPane) btnVolver.getScene().getRoot();
+            
+            MenuPrincipalController controller = loader.getController();
+            controller.setNombreUsuario(Sesion.getUsuario()); // Recupera el nombre del usuario
+            
+            AnchorPane root = (AnchorPane) btnX.getScene().getRoot();
             root.getChildren().clear();
             root.getChildren().add(principalView);
         } catch (IOException e) {
