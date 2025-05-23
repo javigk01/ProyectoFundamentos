@@ -60,7 +60,7 @@ public class ConfirmarEnvioLlaveController {
             MenuPrincipalController controller = loader.getController();
             controller.setNombreUsuario(Sesion.getUsuario()); // Recupera el nombre del usuario
             
-            AnchorPane root = (AnchorPane) btnX.getScene().getRoot();
+            AnchorPane root = (AnchorPane) btnVolver.getScene().getRoot();
             root.getChildren().clear();
             root.getChildren().add(principalView);
         } catch (IOException e) {
