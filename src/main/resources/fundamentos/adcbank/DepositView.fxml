@@ -1,15 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.*?>
+
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="fundamentos.adcbank.controllers.DepositController"
-      spacing="20" alignment="CENTER" styleClass="root"
+      alignment="CENTER" spacing="20"
+      style="-fx-background-color: linear-gradient(to bottom, #0f0f0f, #1c1c1c);"
       stylesheets="@style.css">
-    <Label text="ADC Bank - Deposit Funds" style="-fx-font-weight: bold; -fx-font-size: 16;"/>
-    <Separator/>
-    <TextField fx:id="amountField" promptText="Amount to Deposit"/>
-    <TextField fx:id="tokenField" promptText="Security Token" style="-fx-font-family: monospace;"/>
-    <Button text="Deposit" onAction="#handleDeposit" defaultButton="true"/>
-    <Separator/>
-    <Label text="Your money is safe with us" style="-fx-font-style: italic;"/>
+
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+
+    <Label text="💰 ADC Bank - Deposit Funds"
+           style="-fx-text-fill: linear-gradient(to right, #9f7aea, #63b3ed);
+                  -fx-font-size: 22px; -fx-font-weight: bold;" />
+
+    <Separator style="-fx-background-color: #444; -fx-pref-width: 300;" />
+
+    <TextField fx:id="amountField" promptText="Amount to Deposit"
+               style="-fx-background-color: #262626; -fx-text-fill: white;
+                      -fx-background-radius: 8; -fx-border-color: #444;
+                      -fx-border-radius: 8; -fx-padding: 10;" />
+
+    <TextField fx:id="tokenField" promptText="Security Token"
+               style="-fx-font-family: monospace; -fx-background-color: #262626;
+                      -fx-text-fill: white; -fx-background-radius: 8;
+                      -fx-border-color: #444; -fx-border-radius: 8; -fx-padding: 10;" />
+
+    <Button text="Deposit" onAction="#handleDeposit" defaultButton="true"
+            style="-fx-background-color: linear-gradient(to right, #7f5af0, #6246ea);
+                   -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;
+                   -fx-background-radius: 10; -fx-padding: 10 40;">
+        <effect>
+            <DropShadow radius="10" offsetX="0" offsetY="2" color="#00000055"/>
+        </effect>
+    </Button>
+
+    <Label text="© 2025 ADC Bank. Seguridad y confianza."
+           style="-fx-text-fill: #888888; -fx-font-size: 10px;" />
 </VBox>

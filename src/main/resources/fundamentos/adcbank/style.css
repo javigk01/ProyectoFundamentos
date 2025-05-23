@@ -1,34 +1,48 @@
-/* style.css */
+
 .root {
-    -fx-background-color: #ffffff;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #121212;
+    -fx-text-fill: white;
 }
 
 .label {
-    -fx-text-fill: #403953;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
 }
 
-.text-field, .password-field {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #403953;
-    -fx-border-radius: 4;
-    -fx-padding: 8;
+.text-field {
+    -fx-background-color: #1f1f1f;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #333333;
+    -fx-border-width: 1;
+    -fx-padding: 5;
 }
 
 .button {
-    -fx-background-color: #490062;
-    -fx-text-fill: #ffffff;
-    -fx-background-radius: 4;
-    -fx-padding: 8 16;
+    -fx-background-radius: 8;
+    -fx-padding: 10 20;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.button-red {
+    -fx-background-color: #d32f2f;
+}
+
+.button-blue {
+    -fx-background-color: #1976d2;
+}
+
+.button-green {
+    -fx-background-color: #388e3c;
 }
 
 .button:hover {
-    -fx-background-color: #5a007d;
-}
-
-.hyperlink {
-    -fx-text-fill: #490062;
+    -fx-opacity: 0.85;
 }
 
 .separator {
-    -fx-background-color: #403953;
+    -fx-background-color: #333333;
 }
