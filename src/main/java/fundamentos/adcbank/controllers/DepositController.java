@@ -9,13 +9,25 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.bson.Document;
 
+/**
+ * @brief Controller for handling deposit operations in the ADCBank application.
+ */
 public class DepositController {
+
+    /** @brief Text field for entering the deposit amount. */
     @FXML
     private TextField amountField;
+
+    /** @brief Text field for entering the authentication token. */
     @FXML
     private TextField tokenField;
+
+    /** @brief Authentication service instance for user and token validation. */
     private AuthenticationService authService = AuthenticationService.getInstance();
 
+    /**
+     * @brief Handles the deposit action triggered from the UI.
+     */
     @FXML
     private void handleDeposit() {
         try {
@@ -32,36 +44,28 @@ public class DepositController {
             if (tokenValidator.validate(accountId, amount, null, token)) {
                 TransactionCommand command = new DepositCommand();
                 command.execute(accountId, amount, null);
-
-                // Debug log
-                System.out.println("Deposit successful for account: " + accountId);
-
-                // Refresh UI
                 authService.notifyBalanceUpdate();
-
-                // Show success and close
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText(null);
                 alert.setContentText("Deposit successful.");
                 alert.showAndWait();
-
                 Stage stage = (Stage) amountField.getScene().getWindow();
                 stage.close();
             } else {
-                System.out.println("Token validation failed"); // Debug log
                 showErrorAlert("Invalid token.");
             }
         } catch (NumberFormatException e) {
-            System.out.println("Invalid amount format: " + e.getMessage()); // Debug log
             showErrorAlert("Please enter a valid amount.");
         } catch (Exception e) {
-            System.out.println("Deposit error: " + e.getMessage()); // Debug log
-            e.printStackTrace();
             showErrorAlert("An unexpected error occurred.");
         }
     }
 
+    /**
+     * @brief Displays an error alert with the specified message.
+     * @param message The error message to display.
+     */
     private void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -70,28 +74,22 @@ public class DepositController {
         alert.showAndWait();
     }
 
+    /**
+     * @brief Retrieves the current user's account ID, creating an account if necessary.
+     * @return The account ID as a String, or null if not available.
+     */
     private String getCurrentAccountId() {
         try {
-            // Verify user is logged in
             if (authService.getCurrentUser() == null) {
-                System.out.println("No user logged in");
                 return null;
             }
-
             String userId = authService.getCurrentUser().getString("_id");
-            System.out.println("Current user ID: " + userId); // Debug
-
             MongoCollection<Document> accounts = DatabaseService.getInstance()
                     .getDatabase()
                     .getCollection("accounts");
-
-            // Find account for this user
             Document query = new Document("userId", userId);
             Document account = accounts.find(query).first();
-
             if (account == null) {
-                System.out.println("No account found for user: " + userId);
-                // Create a new account if none exists
                 Account newAccount = new AccountFactory().createAccount("checking", userId);
                 Document accountDoc = new Document()
                         .append("userId", userId)
@@ -100,11 +98,8 @@ public class DepositController {
                 accounts.insertOne(accountDoc);
                 return accountDoc.getString("_id");
             }
-
             return account.getString("_id");
         } catch (Exception e) {
-            System.out.println("Error getting account ID: " + e.getMessage());
-            e.printStackTrace();
             return null;
         }
     }

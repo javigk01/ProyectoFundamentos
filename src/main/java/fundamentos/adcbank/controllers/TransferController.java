@@ -9,15 +9,29 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.bson.Document;
 
+/**
+ * @brief Controller for handling transfer operations in the ADCBank application.
+ */
 public class TransferController {
+
+    /** @brief Text field for entering the transfer amount. */
     @FXML
     private TextField amountField;
+
+    /** @brief Text field for entering the authentication token. */
     @FXML
     private TextField tokenField;
+
+    /** @brief Text field for entering the target account ID. */
     @FXML
     private TextField targetAccountField;
+
+    /** @brief Authentication service instance for user and balance validation. */
     private AuthenticationService authService = AuthenticationService.getInstance();
 
+    /**
+     * @brief Handles the transfer action triggered from the UI.
+     */
     @FXML
     private void handleTransfer() {
         try {
@@ -60,28 +74,22 @@ public class TransferController {
         }
     }
 
+    /**
+     * @brief Retrieves the current user's account ID, creating an account if necessary.
+     * @return The account ID as a String, or null if not available.
+     */
     private String getCurrentAccountId() {
         try {
-            // Verify user is logged in
             if (authService.getCurrentUser() == null) {
-                System.out.println("No user logged in");
                 return null;
             }
-
             String userId = authService.getCurrentUser().getString("_id");
-            System.out.println("Current user ID: " + userId); // Debug
-
             MongoCollection<Document> accounts = DatabaseService.getInstance()
                     .getDatabase()
                     .getCollection("accounts");
-
-            // Find account for this user
             Document query = new Document("userId", userId);
             Document account = accounts.find(query).first();
-
             if (account == null) {
-                System.out.println("No account found for user: " + userId);
-                // Create a new account if none exists
                 Account newAccount = new AccountFactory().createAccount("checking", userId);
                 Document accountDoc = new Document()
                         .append("userId", userId)
@@ -90,11 +98,8 @@ public class TransferController {
                 accounts.insertOne(accountDoc);
                 return accountDoc.getString("_id");
             }
-
             return account.getString("_id");
         } catch (Exception e) {
-            System.out.println("Error getting account ID: " + e.getMessage());
-            e.printStackTrace();
             return null;
         }
     }

@@ -1,18 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.*?>
+
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="fundamentos.adcbank.controllers.MainController"
-      spacing="20" alignment="CENTER" styleClass="root"
+      alignment="CENTER" spacing="25"
+      style="-fx-background-color: linear-gradient(to bottom, #0f0f0f, #1c1c1c);"
       stylesheets="@style.css">
-    <Label text="ADC Bank - Dashboard" style="-fx-font-weight: bold; -fx-font-size: 16;"/>
-    <Separator/>
-    <Label text="Balance:" style="-fx-font-weight: bold;"/>
-    <Label fx:id="balanceLabel" style="-fx-font-size: 14;"/>
-    <Label text="Token:" style="-fx-font-weight: bold;"/>
-    <Label fx:id="tokenLabel" style="-fx-font-family: monospace; -fx-font-size: 14;"/>
-    <Button fx:id="depositButton" text="Deposit" onAction="#handleDeposit"/>
-    <Button fx:id="withdrawButton" text="Withdraw" onAction="#handleWithdraw"/>
-    <Button fx:id="transferButton" text="Transfer" onAction="#handleTransfer"/>
-    <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout"/>
+
+    <padding>
+        <Insets top="50" right="50" bottom="50" left="50"/>
+    </padding>
+
+    <Label text="🔓 ADC Bank - Dashboard"
+           style="-fx-text-fill: linear-gradient(to right, #9f7aea, #63b3ed);
+                  -fx-font-size: 24px; -fx-font-weight: bold;" />
+
+    <Separator style="-fx-background-color: #444; -fx-pref-width: 300;" />
+
+    <Label text="Balance:" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+    <Label fx:id="balanceLabel" style="-fx-text-fill: #63b3ed; -fx-font-size: 18px;"/>
+
+    <Label text="Token:" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+    <Label fx:id="tokenLabel" style="-fx-text-fill: #9f7aea; -fx-font-size: 18px;"/>
+
+    <VBox spacing="15" alignment="CENTER">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+        </padding>
+
+        <Button fx:id="depositButton" text="Deposit" onAction="#handleDeposit"
+                style="-fx-background-color: linear-gradient(to right, #7f5af0, #6246ea);
+                       -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;
+                       -fx-background-radius: 10; -fx-padding: 10 40;">
+            <effect>
+                <DropShadow radius="10" offsetX="0" offsetY="2" color="#00000055"/>
+            </effect>
+        </Button>
+
+        <Button fx:id="withdrawButton" text="Withdraw" onAction="#handleWithdraw"
+                style="-fx-background-color: linear-gradient(to right, #43c6ac, #191654);
+                       -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;
+                       -fx-background-radius: 10; -fx-padding: 10 40;">
+            <effect>
+                <DropShadow radius="10" offsetX="0" offsetY="2" color="#00000055"/>
+            </effect>
+        </Button>
+
+        <Button fx:id="transferButton" text="Transfer" onAction="#handleTransfer"
+                style="-fx-background-color: linear-gradient(to right, #4fd1c5, #319795);
+                       -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;
+                       -fx-background-radius: 10; -fx-padding: 10 40;">
+            <effect>
+                <DropShadow radius="10" offsetX="0" offsetY="2" color="#00000055"/>
+            </effect>
+        </Button>
+
+        <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout"
+                style="-fx-background-color: #aa1f1f;
+                       -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;
+                       -fx-background-radius: 10; -fx-padding: 10 40;">
+            <effect>
+                <DropShadow radius="10" offsetX="0" offsetY="2" color="#00000055"/>
+            </effect>
+        </Button>
+    </VBox>
+
+    <Label text="© 2025 ADC Bank. Seguridad y confianza."
+           style="-fx-text-fill: #888888; -fx-font-size: 10px;" />
 </VBox>

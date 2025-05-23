@@ -13,22 +13,41 @@ import javafx.scene.Scene;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * @brief Controller for the main UI view of the ADCBank application.
+ */
 public class MainController implements Observer {
+
+    /** @brief Label displaying the account balance. */
     @FXML
     private Label balanceLabel;
+
+    /** @brief Label displaying the authentication token. */
     @FXML
     private Label tokenLabel;
+
+    /** @brief Button for initiating a deposit action. */
     @FXML
     private Button depositButton;
+
+    /** @brief Button for initiating a withdrawal action. */
     @FXML
     private Button withdrawButton;
+
+    /** @brief Button for initiating a transfer action. */
     @FXML
     private Button transferButton;
+
+    /** @brief Button for logging out the user. */
     @FXML
     private Button logoutButton;
+
+    /** @brief Authentication service instance for user and balance management. */
     private AuthenticationService authService = AuthenticationService.getInstance();
 
-
+    /**
+     * @brief Initializes the controller and sets up the UI with user data.
+     */
     @FXML
     public void initialize() {
         authService.addObserver(this);
@@ -38,6 +57,11 @@ public class MainController implements Observer {
         }
     }
 
+    /**
+     * @brief Retrieves the account ID for a given user.
+     * @param userId The ID of the user.
+     * @return The account ID, or a default value if not found.
+     */
     private String getAccountIdForUser(String userId) {
         MongoCollection<Document> accounts = DatabaseService.getInstance().getDatabase().getCollection("accounts");
         Document query = new Document("userId", userId);
@@ -45,12 +69,15 @@ public class MainController implements Observer {
         return account != null ? account.getString("_id") : "account1";
     }
 
+    /**
+     * @brief Retrieves the balance for a given account.
+     * @param accountId The ID of the account.
+     * @return The account balance, or 0.0 if not found or invalid.
+     */
     private double getBalanceForAccount(String accountId) {
         MongoCollection<Document> accounts = DatabaseService.getInstance().getDatabase().getCollection("accounts");
         Document query = new Document("_id", accountId);
         Document account = accounts.find(query).first();
-
-        // Updated balance retrieval to handle both Integer and Double cases
         if (account != null) {
             Object balanceValue = account.get("balance");
             if (balanceValue instanceof Integer) {
@@ -61,9 +88,12 @@ public class MainController implements Observer {
                 return ((Number) balanceValue).doubleValue();
             }
         }
-        return 0.0; // Default value if not found or invalid type
+        return 0.0;
     }
 
+    /**
+     * @brief Handles the deposit action by opening the deposit view.
+     */
     @FXML
     private void handleDeposit() {
         try {
@@ -76,6 +106,9 @@ public class MainController implements Observer {
         }
     }
 
+    /**
+     * @brief Handles the withdrawal action by opening the withdrawal view.
+     */
     @FXML
     private void handleWithdraw() {
         try {
@@ -88,6 +121,9 @@ public class MainController implements Observer {
         }
     }
 
+    /**
+     * @brief Handles the transfer action by opening the transfer view.
+     */
     @FXML
     private void handleTransfer() {
         try {
@@ -100,16 +136,14 @@ public class MainController implements Observer {
         }
     }
 
+    /**
+     * @brief Handles the logout action and navigates to the login view.
+     */
     @FXML
     private void handleLogout() {
-        // First refresh UI elements that depend on current user
         balanceLabel.setText("0.00");
         tokenLabel.setText("");
-
-        // Then perform logout
         authService.logout();
-
-        // Finally switch to login view
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fundamentos/adcbank/LoginView.fxml"));
             Stage stage = (Stage) logoutButton.getScene().getWindow();
@@ -120,6 +154,11 @@ public class MainController implements Observer {
         }
     }
 
+    /**
+     * @brief Updates the UI when notified by the authentication service.
+     * @param o The observable object.
+     * @param arg The notification argument.
+     */
     @Override
     public void update(Observable o, Object arg) {
         if (o == authService) {
@@ -128,14 +167,15 @@ public class MainController implements Observer {
                 if (message.equals("balance_update")) {
                     refreshBalance();
                 } else {
-                    // Handle token updates
                     tokenLabel.setText(message);
                 }
             }
         }
     }
 
-
+    /**
+     * @brief Refreshes the balance displayed in the UI.
+     */
     private void refreshBalance() {
         String accountId = getAccountIdForUser(authService.getCurrentUser().getString("_id"));
         double balance = getBalanceForAccount(accountId);

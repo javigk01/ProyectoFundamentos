@@ -3,11 +3,23 @@ package fundamentos.adcbank.services;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
+/**
+ * @brief Validator class to check if a target account exists for transactions.
+ */
 public class AccountExistsValidator extends TransactionValidator {
+
+    /**
+     * @brief Validates if the target account exists for a transaction.
+     * @param accountId The source account ID.
+     * @param amount The transaction amount.
+     * @param targetAccountId The target account ID.
+     * @param token The authentication token.
+     * @return True if the target account exists, false otherwise.
+     */
     @Override
     public boolean validate(String accountId, double amount, String targetAccountId, String token) {
         if (targetAccountId == null) {
-            return true; // Not applicable for non-transfers
+            return true;
         }
         MongoCollection<Document> accounts = DatabaseService.getInstance().getDatabase().getCollection("accounts");
         Document query = new Document("_id", targetAccountId);
