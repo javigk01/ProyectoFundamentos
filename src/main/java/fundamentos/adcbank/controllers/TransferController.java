@@ -35,18 +35,24 @@ public class TransferController {
     @FXML
     private void handleTransfer() {
         try {
+            //Data on regards of users transaction data
             double amount = Double.parseDouble(amountField.getText());
             String token = tokenField.getText();
+            //the user who sends and who the user is sending to
             String targetAccountId = targetAccountField.getText();
             String accountId = getCurrentAccountId();
+            //Validations
             TransactionValidator tokenValidator = new TokenValidator(authService);
             TransactionValidator balanceValidator = new BalanceValidator();
             TransactionValidator accountExistsValidator = new AccountExistsValidator();
             tokenValidator.setNext(balanceValidator);
             balanceValidator.setNext(accountExistsValidator);
+            //If transaction gets validated
             if (tokenValidator.validate(accountId, amount, targetAccountId, token)) {
+                //Execute transfer
                 TransactionCommand command = new TransferCommand();
                 command.execute(accountId, amount, targetAccountId);
+                //Indicate user on regards of the success of the operation
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText(null);
@@ -54,6 +60,7 @@ public class TransferController {
                 alert.showAndWait();
                 Stage stage = (Stage) amountField.getScene().getWindow();
                 stage.close();
+                //Shows new balance and makes a notification about the balance updating
                 authService.notifyBalanceUpdate();
                 AuthenticationService.getInstance().notifyBalanceUpdate();
             } else {
