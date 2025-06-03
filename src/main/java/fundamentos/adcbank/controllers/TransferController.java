@@ -35,24 +35,18 @@ public class TransferController {
     @FXML
     private void handleTransfer() {
         try {
-            //Data on regards of users transaction data
             double amount = Double.parseDouble(amountField.getText());
             String token = tokenField.getText();
-            //the user who sends and who the user is sending to
             String targetAccountId = targetAccountField.getText();
             String accountId = getCurrentAccountId();
-            //Validations
             TransactionValidator tokenValidator = new TokenValidator(authService);
             TransactionValidator balanceValidator = new BalanceValidator();
             TransactionValidator accountExistsValidator = new AccountExistsValidator();
             tokenValidator.setNext(balanceValidator);
             balanceValidator.setNext(accountExistsValidator);
-            //If transaction gets validated
             if (tokenValidator.validate(accountId, amount, targetAccountId, token)) {
-                //Execute transfer
                 TransactionCommand command = new TransferCommand();
                 command.execute(accountId, amount, targetAccountId);
-                //Indicate user on regards of the success of the operation
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText(null);
@@ -60,21 +54,16 @@ public class TransferController {
                 alert.showAndWait();
                 Stage stage = (Stage) amountField.getScene().getWindow();
                 stage.close();
-                //Shows new balance and makes a notification about the balance updating
                 authService.notifyBalanceUpdate();
                 AuthenticationService.getInstance().notifyBalanceUpdate();
-                //If not validated
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Validation Failed");
                 alert.setHeaderText(null);
-                //Reasons for failure
                 alert.setContentText("Invalid token, insufficient balance, or target account does not exist.");
                 alert.showAndWait();
             }
-            
         } catch (NumberFormatException e) {
-            //Errors on user input (format)
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Input Error");
             alert.setHeaderText(null);
@@ -91,20 +80,15 @@ public class TransferController {
      */
     private String getCurrentAccountId() {
         try {
-            //If current user is null
             if (authService.getCurrentUser() == null) {
                 return null;
             }
-            
             String userId = authService.getCurrentUser().getString("_id");
-            //Gets account information from the database
             MongoCollection<Document> accounts = DatabaseService.getInstance()
                     .getDatabase()
                     .getCollection("accounts");
             Document query = new Document("userId", userId);
             Document account = accounts.find(query).first();
-            
-            //Creates the account if not found
             if (account == null) {
                 Account newAccount = new AccountFactory().createAccount("checking", userId);
                 Document accountDoc = new Document()

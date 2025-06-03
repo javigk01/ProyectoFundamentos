@@ -4,6 +4,7 @@ module fundamentos.adcbank {
     requires org.mongodb.driver.sync.client;
     requires org.mongodb.bson;
     requires org.mongodb.driver.core;
+    requires jakarta.mail;
 
     opens fundamentos.adcbank to javafx.fxml;
     opens fundamentos.adcbank.controllers to javafx.fxml;
