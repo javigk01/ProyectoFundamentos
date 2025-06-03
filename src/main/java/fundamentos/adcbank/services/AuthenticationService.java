@@ -56,22 +56,30 @@ public class AuthenticationService extends Observable {
     /**
      * @brief Registers a new user with the provided credentials and creates a default account.
      * @param username The username of the new user.
+     * @param email The email address of the new user.
      * @param password The password of the new user.
-     * @return True if registration and account creation are successful, false if the username already exists.
+     * @return True if registration and account creation are successful, false if the username or email already exists.
      */
-    public boolean register(String username, String password) {
+    public boolean register(String username, String email, String password) {
         MongoCollection<Document> users = DatabaseService.getInstance().getDatabase().getCollection("users");
         MongoCollection<Document> accounts = DatabaseService.getInstance().getDatabase().getCollection("accounts");
 
-        // Check if username already exists
-        Document query = new Document("username", username);
-        if (users.find(query).first() != null) {
-            return false;
+        // Check if username or email already exists
+        Document usernameQuery = new Document("username", username);
+        Document emailQuery = new Document("email", email);
+
+        if (users.find(usernameQuery).first() != null) {
+            return false; // Username already exists
+        }
+
+        if (users.find(emailQuery).first() != null) {
+            return false; // Email already exists
         }
 
         // Create new user
         String userId = "USER" + (users.countDocuments() + 1);
         Document newUser = new Document("username", username)
+                .append("email", email)
                 .append("password", password)
                 .append("_id", userId);
 
@@ -91,6 +99,40 @@ public class AuthenticationService extends Observable {
             // Log error and rollback if necessary (MongoDB transactions can be used for atomicity)
             System.err.println("Error during registration: " + e.getMessage());
             return false;
+        }
+    }
+
+    /**
+     * @brief Overloaded register method for backward compatibility.
+     * @param username The username of the new user.
+     * @param password The password of the new user.
+     * @return True if registration is successful, false otherwise.
+     */
+    public boolean register(String username, String password) {
+        // Generate a default email for backward compatibility
+        String defaultEmail = username + "@adcbank.local";
+        return register(username, defaultEmail, password);
+    }
+
+    /**
+     * @brief Gets user information by account ID.
+     * @param accountId The account ID.
+     * @return The user Document, or null if not found.
+     */
+    public Document getUserByAccountId(String accountId) {
+        try {
+            MongoCollection<Document> accounts = DatabaseService.getInstance().getDatabase().getCollection("accounts");
+            MongoCollection<Document> users = DatabaseService.getInstance().getDatabase().getCollection("users");
+
+            Document account = accounts.find(new Document("_id", accountId)).first();
+            if (account != null) {
+                String userId = account.getString("userId");
+                return users.find(new Document("_id", userId)).first();
+            }
+            return null;
+        } catch (Exception e) {
+            System.err.println("Error getting user by account ID: " + e.getMessage());
+            return null;
         }
     }
 

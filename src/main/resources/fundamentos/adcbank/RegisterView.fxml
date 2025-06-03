@@ -29,6 +29,11 @@
                           -fx-background-radius: 8; -fx-border-color: #444;
                           -fx-border-radius: 8; -fx-padding: 10;" />
 
+        <TextField fx:id="emailField" promptText="Email Address"
+                   style="-fx-background-color: #262626; -fx-text-fill: white;
+                          -fx-background-radius: 8; -fx-border-color: #444;
+                          -fx-border-radius: 8; -fx-padding: 10;" />
+
         <PasswordField fx:id="passwordField" promptText="Password"
                        style="-fx-background-color: #262626; -fx-text-fill: white;
                               -fx-background-radius: 8; -fx-border-color: #444;

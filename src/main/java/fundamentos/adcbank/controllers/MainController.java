@@ -18,6 +18,10 @@ import java.util.Observer;
  */
 public class MainController implements Observer {
 
+    /** @brief Label displaying the welcome message with username. */
+    @FXML
+    private Label welcomeLabel;
+
     /** @brief Label displaying the account balance. */
     @FXML
     private Label balanceLabel;
@@ -52,6 +56,11 @@ public class MainController implements Observer {
     public void initialize() {
         authService.addObserver(this);
         if (authService.getCurrentUser() != null) {
+            // Set welcome message with username
+            String username = authService.getCurrentUser().getString("username");
+            welcomeLabel.setText("Welcome, " + username + "!");
+
+            // Set token and refresh balance
             tokenLabel.setText(authService.getCurrentToken());
             refreshBalance();
         }
@@ -100,6 +109,7 @@ public class MainController implements Observer {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fundamentos/adcbank/DepositView.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
+            stage.setTitle("ADC Bank - Deposit");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,6 +125,7 @@ public class MainController implements Observer {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fundamentos/adcbank/WithdrawView.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
+            stage.setTitle("ADC Bank - Withdraw");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,6 +141,7 @@ public class MainController implements Observer {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fundamentos/adcbank/TransferView.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
+            stage.setTitle("ADC Bank - Transfer");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,13 +153,19 @@ public class MainController implements Observer {
      */
     @FXML
     private void handleLogout() {
+        // Clear UI elements
         balanceLabel.setText("0.00");
         tokenLabel.setText("");
+        welcomeLabel.setText("");
+
+        // Logout from service
         authService.logout();
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fundamentos/adcbank/LoginView.fxml"));
             Stage stage = (Stage) logoutButton.getScene().getWindow();
             stage.setScene(new Scene(loader.load()));
+            stage.setTitle("ADC Bank - Login");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -177,8 +195,10 @@ public class MainController implements Observer {
      * @brief Refreshes the balance displayed in the UI.
      */
     private void refreshBalance() {
-        String accountId = getAccountIdForUser(authService.getCurrentUser().getString("_id"));
-        double balance = getBalanceForAccount(accountId);
-        balanceLabel.setText(String.format("%.2f", balance));
+        if (authService.getCurrentUser() != null) {
+            String accountId = getAccountIdForUser(authService.getCurrentUser().getString("_id"));
+            double balance = getBalanceForAccount(accountId);
+            balanceLabel.setText(String.format("%.2f", balance));
+        }
     }
 }
