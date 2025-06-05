@@ -44,6 +44,44 @@ public class EmailService {
     }
 
     /**
+     * @brief Sends a verification email with a code to the user.
+     * @param recipientEmail The email address of the recipient.
+     * @param username The username of the user.
+     * @param verificationCode The verification code to send.
+     * @return True if email was sent successfully, false otherwise.
+     */
+    public boolean sendVerificationEmail(String recipientEmail, String username, String verificationCode) {
+        try {
+            String subject = "ADC Bank - Email Verification";
+            String timestamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date());
+
+            String body = String.format(
+                    "Dear %s,\n\n" +
+                            "Welcome to ADC Bank! To complete your registration, please verify your email address.\n\n" +
+                            "Your verification code is: %s\n\n" +
+                            "This code will expire in 10 minutes for security reasons.\n\n" +
+                            "If you did not request this verification, please ignore this email.\n\n" +
+                            "Verification Details:\n" +
+                            "- Username: %s\n" +
+                            "- Email: %s\n" +
+                            "- Generated: %s\n\n" +
+                            "Thank you for choosing ADC Bank!\n\n" +
+                            "Best regards,\n" +
+                            "ADC Bank Security Team\n\n" +
+                            "This is an automated message, please do not reply.",
+                    username, verificationCode, username, recipientEmail, timestamp
+            );
+
+            sendEmail(recipientEmail, subject, body);
+            System.out.println("Verification email sent successfully to: " + recipientEmail);
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error sending verification email: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
      * @brief Sends a transfer confirmation email to the sender.
      * @param senderEmail The email address of the sender.
      * @param senderName The name of the sender.
@@ -140,34 +178,12 @@ public class EmailService {
             }
         });
 
-        try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(BANK_EMAIL, "ADC Bank"));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
-            message.setSubject(subject);
-            message.setText(body);
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(BANK_EMAIL));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
+        message.setSubject(subject);
+        message.setText(body);
 
-            Transport.send(message);
-            System.out.println("Email sent successfully to: " + recipientEmail);
-        } catch (Exception e) {
-            System.err.println("Failed to send email to " + recipientEmail + ": " + e.getMessage());
-            throw new MessagingException("Email sending failed", e);
-        }
-    }
-
-    /**
-     * @brief Tests the email configuration by sending a test email.
-     * @param testEmail The email address to send the test to.
-     * @return True if the test email was sent successfully, false otherwise.
-     */
-    public boolean testEmailConfiguration(String testEmail) {
-        try {
-            sendEmail(testEmail, "ADC Bank - Email Test",
-                    "This is a test email from ADC Bank. If you receive this, your email configuration is working correctly.");
-            return true;
-        } catch (Exception e) {
-            System.err.println("Email configuration test failed: " + e.getMessage());
-            return false;
-        }
+        Transport.send(message);
     }
 }

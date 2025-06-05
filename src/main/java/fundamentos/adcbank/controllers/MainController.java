@@ -42,6 +42,10 @@ public class MainController implements Observer {
     @FXML
     private Button transferButton;
 
+    /** @brief Button for viewing transaction history. */
+    @FXML
+    private Button historyButton;
+
     /** @brief Button for logging out the user. */
     @FXML
     private Button logoutButton;
@@ -142,6 +146,22 @@ public class MainController implements Observer {
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
             stage.setTitle("ADC Bank - Transfer");
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @brief Handles the transaction history action by opening the history view.
+     */
+    @FXML
+    private void handleHistory() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fundamentos/adcbank/TransactionHistoryView.fxml"));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loader.load()));
+            stage.setTitle("ADC Bank - Transaction History");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();

@@ -62,6 +62,15 @@
             </effect>
         </Button>
 
+        <Button fx:id="historyButton" text="Transaction History" onAction="#handleHistory"
+                style="-fx-background-color: linear-gradient(to right, #f093fb, #f5576c);
+                       -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;
+                       -fx-background-radius: 10; -fx-padding: 10 40;">
+            <effect>
+                <DropShadow radius="10" offsetX="0" offsetY="2" color="#00000055"/>
+            </effect>
+        </Button>
+
         <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout"
                 style="-fx-background-color: #aa1f1f;
                        -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;

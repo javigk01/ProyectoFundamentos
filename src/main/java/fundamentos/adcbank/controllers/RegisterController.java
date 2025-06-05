@@ -1,6 +1,6 @@
 package fundamentos.adcbank.controllers;
 
-import fundamentos.adcbank.services.AuthenticationService;
+import fundamentos.adcbank.services.EmailVerificationService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -26,8 +26,8 @@ public class RegisterController {
     @FXML
     private PasswordField passwordField;
 
-    /** @brief Authentication service instance for handling registration logic. */
-    private AuthenticationService authService = AuthenticationService.getInstance();
+    /** @brief Email verification service instance. */
+    private EmailVerificationService verificationService = EmailVerificationService.getInstance();
 
     /**
      * @brief Handles the user registration process.
@@ -50,12 +50,49 @@ public class RegisterController {
             return;
         }
 
-        boolean registered = authService.register(username, email, password);
-        if (registered) {
-            showAlert(Alert.AlertType.INFORMATION, "Success", "User registered successfully!");
-            handleBackToLogin();
+        // Validate password strength
+        if (password.length() < 6) {
+            showAlert(Alert.AlertType.ERROR, "Weak Password", "Password must be at least 6 characters long.");
+            return;
+        }
+
+        // Send verification email
+        boolean codeSent = verificationService.sendVerificationCode(email, username);
+
+        if (codeSent) {
+            showAlert(Alert.AlertType.INFORMATION, "Verification Required",
+                    "A verification code has been sent to your email address. Please check your inbox.");
+
+            // Navigate to email verification view
+            navigateToEmailVerification(email, username, password);
         } else {
-            showAlert(Alert.AlertType.ERROR, "Registration Failed", "Username or email already exists.");
+            showAlert(Alert.AlertType.ERROR, "Email Error",
+                    "Failed to send verification email. Please check your email address and try again.");
+        }
+    }
+
+    /**
+     * @brief Navigates to the email verification view.
+     * @param email The email address.
+     * @param username The username.
+     * @param password The password.
+     */
+    private void navigateToEmailVerification(String email, String username, String password) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fundamentos/adcbank/EmailVerificationView.fxml"));
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            Scene scene = new Scene(loader.load());
+
+            // Get the controller and initialize it with user data
+            EmailVerificationController controller = loader.getController();
+            controller.initializeWithData(email, username, password);
+
+            stage.setScene(scene);
+            stage.setTitle("ADC Bank - Email Verification");
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to navigate to verification page.");
         }
     }
 
@@ -84,7 +121,7 @@ public class RegisterController {
     }
 
     /**
-     * @brief Navigates back to the login view after successful registration.
+     * @brief Navigates back to the login view.
      */
     @FXML
     private void handleBackToLogin() {
@@ -92,6 +129,7 @@ public class RegisterController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fundamentos/adcbank/LoginView.fxml"));
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setScene(new Scene(loader.load()));
+            stage.setTitle("ADC Bank - Login");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
