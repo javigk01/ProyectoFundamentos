@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="fundamentos.adcbank.controllers.TransactionHistoryController"
+      alignment="CENTER" spacing="20"
+      style="-fx-background-color: linear-gradient(to bottom, #0f0f0f, #1c1c1c);"
+      stylesheets="@style.css">
+
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30"/>
+    </padding>
+
+    <Label text="📊 ADC Bank - Transaction History"
+           style="-fx-text-fill: linear-gradient(to right, #9f7aea, #63b3ed);
+                  -fx-font-size: 22px; -fx-font-weight: bold;" />
+
+    <Separator style="-fx-background-color: #444; -fx-pref-width: 400;" />
+
+    <!-- Information labels -->
+    <HBox spacing="20" alignment="CENTER">
+        <Label fx:id="accountInfoLabel"
+               style="-fx-text-fill: #43c6ac; -fx-font-size: 14px; -fx-font-weight: bold;" />
+        <Label fx:id="balanceInfoLabel"
+               style="-fx-text-fill: #63b3ed; -fx-font-size: 14px; -fx-font-weight: bold;" />
+    </HBox>
+
+    <Separator style="-fx-background-color: #444; -fx-pref-width: 400;" />
+
+    <!-- Transaction list -->
+    <ScrollPane fx:id="scrollPane" fitToWidth="true" fitToHeight="true"
+                style="-fx-background: transparent; -fx-background-color: transparent;"
+                hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+                maxHeight="400" minHeight="300">
+        <VBox fx:id="transactionList" spacing="10" alignment="TOP_CENTER">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+        </VBox>
+    </ScrollPane>
+
+    <!-- Close button -->
+    <Button text="Close" onAction="#handleClose"
+            style="-fx-background-color: linear-gradient(to right, #7f5af0, #6246ea);
+                   -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;
+                   -fx-background-radius: 10; -fx-padding: 10 40;">
+        <effect>
+            <DropShadow radius="10" offsetX="0" offsetY="2" color="#00000055"/>
+        </effect>
+    </Button>
+
+    <Label text="© 2025 ADC Bank. Seguridad y confianza."
+           style="-fx-text-fill: #888888; -fx-font-size: 10px;" />
+</VBox>

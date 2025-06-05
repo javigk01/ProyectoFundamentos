@@ -33,6 +33,12 @@ public class WithdrawCommand implements TransactionCommand {
             }
             accounts.updateOne(query,
                     new Document("$set", new Document("balance", balance - amount)));
+
+            // Record the transaction
+            TransactionService.getInstance().recordTransaction(
+                    accountId.toUpperCase(), "WITHDRAW", amount, null, "Withdrawal from account"
+            );
+
         } catch (Exception e) {
             throw e;
         }

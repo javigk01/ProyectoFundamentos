@@ -34,6 +34,12 @@ public class DepositCommand implements TransactionCommand {
             }
             double newBalance = currentBalance + amount;
             accounts.updateOne(query, new Document("$set", new Document("balance", newBalance)));
+
+            // Record the transaction
+            TransactionService.getInstance().recordTransaction(
+                    accountId, "DEPOSIT", amount, null, "Deposit to account"
+            );
+
         } catch (Exception e) {
             throw e;
         }

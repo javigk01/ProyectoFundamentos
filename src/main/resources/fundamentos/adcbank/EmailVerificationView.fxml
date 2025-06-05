@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="fundamentos.adcbank.controllers.EmailVerificationController"
+      alignment="CENTER" spacing="25"
+      style="-fx-background-color: linear-gradient(to bottom, #0f0f0f, #1c1c1c);"
+      stylesheets="@style.css">
+
+    <padding>
+        <Insets top="50" right="50" bottom="50" left="50"/>
+    </padding>
+
+    <Label text="📧 ADC Bank - Email Verification"
+           style="-fx-text-fill: linear-gradient(to right, #9f7aea, #63b3ed);
+                  -fx-font-size: 22px; -fx-font-weight: bold;" />
+
+    <Separator style="-fx-background-color: #444; -fx-pref-width: 400;" />
+
+    <!-- Information message -->
+    <VBox spacing="10" alignment="CENTER">
+        <Label text="We've sent a verification code to your email address."
+               style="-fx-text-fill: white; -fx-font-size: 14px; -fx-text-alignment: center;" />
+        <Label fx:id="emailDisplayLabel"
+               style="-fx-text-fill: #43c6ac; -fx-font-size: 14px; -fx-font-weight: bold;" />
+        <Label text="Please enter the 6-digit code below to complete your registration."
+               style="-fx-text-fill: #888; -fx-font-size: 12px; -fx-text-alignment: center;" />
+        <Label text="The code expires in 10 minutes."
+               style="-fx-text-fill: #f56565; -fx-font-size: 12px; -fx-text-alignment: center;" />
+    </VBox>
+
+    <!-- Verification code input -->
+    <VBox spacing="10" alignment="CENTER">
+        <Label text="Verification Code:"
+               style="-fx-text-fill: white; -fx-font-size: 14px;" />
+        <TextField fx:id="verificationCodeField" promptText="Enter 6-digit code"
+                   style="-fx-pref-width: 200; -fx-font-size: 16px; -fx-text-alignment: center;
+                          -fx-font-weight: bold; -fx-letter-spacing: 2px;"
+                   maxWidth="200" />
+    </VBox>
+
+    <!-- Action buttons -->
+    <HBox spacing="15" alignment="CENTER">
+        <padding>
+            <Insets top="20" right="10" bottom="10" left="10"/>
+        </padding>
+
+        <Button text="Verify" onAction="#handleVerify"
+                style="-fx-background-color: linear-gradient(to right, #43c6ac, #191654);
+                       -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;
+                       -fx-background-radius: 10; -fx-padding: 10 30;">
+            <effect>
+                <DropShadow radius="10" offsetX="0" offsetY="2" color="#00000055"/>
+            </effect>
+        </Button>
+
+        <Button text="Resend Code" onAction="#handleResendCode"
+                style="-fx-background-color: linear-gradient(to right, #7f5af0, #6246ea);
+                       -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;
+                       -fx-background-radius: 10; -fx-padding: 10 30;">
+            <effect>
+                <DropShadow radius="10" offsetX="0" offsetY="2" color="#00000055"/>
+            </effect>
+        </Button>
+
+        <Button text="Cancel" onAction="#handleCancel"
+                style="-fx-background-color: #aa1f1f;
+                       -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;
+                       -fx-background-radius: 10; -fx-padding: 10 30;">
+            <effect>
+                <DropShadow radius="10" offsetX="0" offsetY="2" color="#00000055"/>
+            </effect>
+        </Button>
+    </HBox>
+
+    <Label text="© 2025 ADC Bank. Seguridad y confianza."
+           style="-fx-text-fill: #888888; -fx-font-size: 10px;" />
+</VBox>

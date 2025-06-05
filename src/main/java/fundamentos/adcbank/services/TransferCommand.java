@@ -46,6 +46,12 @@ public class TransferCommand implements TransactionCommand {
             // Generate transaction ID for email notifications
             String transactionId = "TXN-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
+            // Record only ONE transaction with both account IDs
+            TransactionService.getInstance().recordTransaction(
+                sourceAccountId.toUpperCase(), "TRANSFER", amount, targetAccountId.toUpperCase(), 
+                "Transfer from " + sourceAccountId.toUpperCase() + " to " + targetAccountId.toUpperCase()
+            );
+
             // Send email notifications
             sendEmailNotifications(sourceAccountId, targetAccountId, amount, transactionId);
 

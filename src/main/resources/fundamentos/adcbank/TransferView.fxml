@@ -14,35 +14,70 @@
         <Insets top="40" right="40" bottom="40" left="40"/>
     </padding>
 
-    <Label text="🔄 ADC Bank - Transfer Funds"
+    <Label text="🔄 ADC Bank - Transfer"
            style="-fx-text-fill: linear-gradient(to right, #9f7aea, #63b3ed);
-                  -fx-font-size: 22px; -fx-font-weight: bold;" />
+                  -fx-font-size: 20px; -fx-font-weight: bold;" />
 
-    <Separator style="-fx-background-color: #444; -fx-pref-width: 300;" />
+    <Separator style="-fx-background-color: #444; -fx-pref-width: 350;" />
 
-    <TextField fx:id="amountField" promptText="Amount"
-               style="-fx-background-color: #262626; -fx-text-fill: white;
-                      -fx-background-radius: 8; -fx-border-color: #444;
-                      -fx-border-radius: 8; -fx-padding: 10;" />
+    <!-- Current Balance Display -->
+    <VBox spacing="5" alignment="CENTER">
+        <Label text="Current Balance:"
+               style="-fx-text-fill: white; -fx-font-size: 14px;" />
+        <Label fx:id="currentBalanceLabel"
+               style="-fx-text-fill: #43c6ac; -fx-font-size: 18px; -fx-font-weight: bold;" />
+    </VBox>
 
-    <TextField fx:id="targetAccountField" promptText="Target Account ID"
-               style="-fx-background-color: #262626; -fx-text-fill: white;
-                      -fx-background-radius: 8; -fx-border-color: #444;
-                      -fx-border-radius: 8; -fx-padding: 10;" />
+    <Separator style="-fx-background-color: #444; -fx-pref-width: 350;" />
 
-    <TextField fx:id="tokenField" promptText="Token"
-               style="-fx-background-color: #262626; -fx-text-fill: white;
-                      -fx-background-radius: 8; -fx-border-color: #444;
-                      -fx-border-radius: 8; -fx-padding: 10;" />
+    <!-- Transfer Form -->
+    <VBox spacing="15" alignment="CENTER">
+        <VBox spacing="5" alignment="CENTER">
+            <Label text="Transfer Amount:"
+                   style="-fx-text-fill: white; -fx-font-size: 14px;" />
+            <TextField fx:id="amountField" promptText="Enter amount"
+                       style="-fx-pref-width: 250; -fx-font-size: 14px;" />
+        </VBox>
 
-    <Button text="Transfer" onAction="#handleTransfer" defaultButton="true"
-            style="-fx-background-color: linear-gradient(to right, #7f5af0, #6246ea);
-                   -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;
-                   -fx-background-radius: 10; -fx-padding: 10 40;">
-        <effect>
-            <DropShadow radius="10" offsetX="0" offsetY="2" color="#00000055"/>
-        </effect>
-    </Button>
+        <VBox spacing="5" alignment="CENTER">
+            <Label text="Target Account ID:"
+                   style="-fx-text-fill: white; -fx-font-size: 14px;" />
+            <TextField fx:id="targetAccountField" promptText="Enter target account ID"
+                       style="-fx-pref-width: 250; -fx-font-size: 14px;" />
+        </VBox>
+
+        <VBox spacing="5" alignment="CENTER">
+            <Label text="Authentication Token:"
+                   style="-fx-text-fill: white; -fx-font-size: 14px;" />
+            <TextField fx:id="tokenField" promptText="Enter your token"
+                       style="-fx-pref-width: 250; -fx-font-size: 14px;" />
+        </VBox>
+    </VBox>
+
+    <!-- Action Buttons -->
+    <HBox spacing="15" alignment="CENTER">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+        </padding>
+
+        <Button text="Transfer" onAction="#handleTransfer"
+                style="-fx-background-color: linear-gradient(to right, #4fd1c5, #319795);
+                       -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;
+                       -fx-background-radius: 8; -fx-padding: 10 30;">
+            <effect>
+                <DropShadow radius="5" offsetX="0" offsetY="2" color="#00000044"/>
+            </effect>
+        </Button>
+
+        <Button text="Cancel" onAction="#handleCancel"
+                style="-fx-background-color: #666666;
+                       -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;
+                       -fx-background-radius: 8; -fx-padding: 10 30;">
+            <effect>
+                <DropShadow radius="5" offsetX="0" offsetY="2" color="#00000044"/>
+            </effect>
+        </Button>
+    </HBox>
 
     <Label text="© 2025 ADC Bank. Seguridad y confianza."
            style="-fx-text-fill: #888888; -fx-font-size: 10px;" />
